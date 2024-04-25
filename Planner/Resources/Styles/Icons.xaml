@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Planner.Resources.Styles.Icons">
+    <x:String x:Key="arrow-left">&#xf060;</x:String>
+    <x:String x:Key="arrow-right">&#xf061;</x:String>
+    <x:String x:Key="circle-plus">&#xf055;</x:String>
+</ResourceDictionary>

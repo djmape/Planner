@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Planner.Views.MonthPage"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <Grid RowDefinitions ="Auto, Auto, 1*, 1*, 1*,1*,1*"
+              ColumnDefinitions="1* ,1*, 1*, 1*, 1*, 1*, 1*, 1*">
+        <ImageButton Grid.Row="0" Grid.Column="0">
+            <ImageButton.Source>
+                <FontImageSource
+                    FontFamily="FASolid"
+                    Glyph="{StaticResource arrow-left}"
+                    Color="DodgerBlue"
+                    Size="24"/>
+            </ImageButton.Source>
+        </ImageButton>
+        <ImageButton Grid.Row="0" Grid.Column="1">
+            <ImageButton.Source>
+                <FontImageSource
+                    FontFamily="FASolid"
+                    Glyph="{StaticResource arrow-right}"
+                    Color="DodgerBlue"
+                    Size="24"/>
+            </ImageButton.Source>
+        </ImageButton>
+        <Picker ItemsSource="{Binding RangePicker}"
+                SelectedIndex="{Binding SelectedRange}"
+                Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="1">
+            <Picker.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="SelectedIndexChanged"
+                    Command="{Binding OnRangePickerChangedCommand}"
+                    CommandParameter="{Binding SelectedRange}"/>
+            </Picker.Behaviors>
+        </Picker>
+        <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4"
+               Text="MONTH"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+        <Label Grid.Row="1" Grid.Column="0"
+               Text="Week"
+               VerticalOptions="Center"
+               HorizontalOptions="Center" />
+        <Label Grid.Row="1" Grid.Column="1"
+               Text="Weekdays"
+               VerticalOptions="Center"
+               HorizontalOptions="Center" />
+        <Label Grid.Row="2" Grid.Column="0"
+               Text="week1"
+               VerticalOptions="Center"
+               HorizontalOptions="Center" />
+        <Label Grid.Row="1" Grid.Column="3"
+               Text="week 1"
+               VerticalOptions="Center"
+               HorizontalOptions="Center" />
+        <Label Grid.Row="2" Grid.Column="4"
+               Text="week 2"
+               VerticalOptions="Center"
+               HorizontalOptions="Center" />
+        <Label Grid.Row="3" Grid.Column="5"
+               Text="week 3"
+               VerticalOptions="Center"
+               HorizontalOptions="Center" />
+        <Label Grid.Row="4" Grid.Column="6"
+               Text="week 4"
+               VerticalOptions="Center"
+               HorizontalOptions="Center" />
+        <Label Grid.Row="5" Grid.Column="7"
+               Text="week 5"
+               VerticalOptions="Center"
+               HorizontalOptions="Center" />
+    </Grid>
+    
+</ContentPage>
