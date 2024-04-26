@@ -1,22 +1,23 @@
 ﻿namespace Planner.Models
 {
-    internal class DateTimeNow
+    public class DateTimeNow
     {
-        public DateTime RawDateTime { get; private set; }
+        public DateTime RawDateTime { get; set; }
 
-        public string DateTodayToString()
+        public DateTimeNow()
         {
-            return RawDateTime.Today.Date.ToString("D");
-        }
-
-        public string TimeNowToString()
-        {
-            return RawDateTime.Now.ToString("HH:mm");
-        }
-
-        private DateTime GetDateTimeNow() 
-        { 
             RawDateTime = DateTime.Now;
         }
+
+        public string GetDateTodayString()
+        {
+            return RawDateTime.ToString("D");
+        }
+
+        public string GetTimeNowString()
+        {
+            return RawDateTime.ToString("HH:mm");
+        }
+
     }
 }

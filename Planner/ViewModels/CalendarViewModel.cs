@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using Planner.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -18,31 +17,39 @@ namespace Planner.ViewModels
         [ObservableProperty]
         private int _selectedRange;
 
-        public List<String> RangePicker { get; set; }
+        private List<String> rangePicker;
+        public List<String> RangePicker 
+        {
+            get
+            {
+                return rangePicker;
+            }
+
+            set
+            {
+                OnRangePickerChangedCommand = new Command(OnRangePickerChanged);
+            }
+         }
 
         public CalendarViewModel()
         {
             ListRange();
 
-            Title = DateTimeNow.DateTodayToString();
+            DateTimeNow dateTimeNow = new DateTimeNow();
 
-            OnRangePickerChangedCommand = new Command(OnRangePickerChanged);
+            Title = dateTimeNow.RawDateTime.ToString();
 
             DayDetails = new ObservableCollection<Calendar>
             {
-                new Calendar { Date = "One"},
-                new Calendar { Date = "Two"},
+                new Calendar { Date = dateTimeNow.GetDateTodayString()},
+                new Calendar { Date = dateTimeNow.GetTimeNowString()},
                 new Calendar { Date = "Three"}
             };
         }
 
         private void ListRange()
         {
-            RangePicker = new List<String>();
-
-            RangePicker.Add("Day");
-            RangePicker.Add("Week");
-            RangePicker.Add("Month");
+            RangePicker = ["Day", "Week", "Month"];
         }
 
         private async void OnRangePickerChanged()
