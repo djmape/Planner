@@ -19,5 +19,10 @@
             return RawDateTime.ToString("HH:mm");
         }
 
+        public string GetHourNowString()
+        {
+            return RawDateTime.ToString("HH:00");
+        }
+
     }
 }

@@ -29,6 +29,10 @@
                 Color="DodgerBlue"
                 Size="24"/>
             </ImageButton.Source>
+            <ImageButton.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="Clicked"
+                                                Command="{Binding OnDayArrowLeftClicked}"/>
+            </ImageButton.Behaviors>
         </ImageButton>
         <ImageButton Grid.Row="0" Grid.Column="1">
             <ImageButton.Source>
@@ -38,6 +42,10 @@
                 Color="DodgerBlue"
                 Size="24"/>
             </ImageButton.Source>
+            <ImageButton.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="Clicked"
+                                                Command="{Binding OnDayArrowRightClicked}"/>
+            </ImageButton.Behaviors>
         </ImageButton>
         <Label Grid.Row="0" Grid.Column="2"
                Text="{Binding Title}"
@@ -52,11 +60,11 @@
                     CommandParameter="{Binding SelectedRange}"/>
             </Picker.Behaviors>
         </Picker>
-        <ListView ItemsSource="{Binding DayDetails}"
+        <ListView ItemsSource="{Binding DayHours}"
             Grid.Row="1" Grid.ColumnSpan="5">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Date}" Detail="{Binding Date}" />
+                    <TextCell Text="{Binding HourString}" Detail="{Binding Hour}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

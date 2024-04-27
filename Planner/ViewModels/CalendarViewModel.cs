@@ -7,9 +7,15 @@ namespace Planner.ViewModels
 {
     public partial class CalendarViewModel : ObservableObject
     {
-        public ObservableCollection<Calendar> DayDetails { get; private set; }
+        public ObservableCollection<DayHour> DayHours { get; private set; }
+
+        public DateTime dtDateTimeNow { get; private set; }
 
         public ICommand OnRangePickerChangedCommand { get; private set; }
+
+        public ICommand OnDayArrowLeftClickedCommand { get; private set; }
+
+        public ICommand OnDayArrowRightClickedCommand {  get; private set; }
 
         [ObservableProperty]
         private string _title;
@@ -17,39 +23,30 @@ namespace Planner.ViewModels
         [ObservableProperty]
         private int _selectedRange;
 
-        private List<String> rangePicker;
-        public List<String> RangePicker 
-        {
-            get
-            {
-                return rangePicker;
-            }
-
-            set
-            {
-                OnRangePickerChangedCommand = new Command(OnRangePickerChanged);
-            }
-         }
+        public List<String> RangePicker;
 
         public CalendarViewModel()
         {
             ListRange();
 
-            DateTimeNow dateTimeNow = new DateTimeNow();
+            OnRangePickerChangedCommand = new Command(OnRangePickerChanged);
+            OnDayArrowLeftClickedCommand = new Command(OnDayArrowLeftClicked);
 
-            Title = dateTimeNow.RawDateTime.ToString();
+            DateTimeNow DateTimeNow = new DateTimeNow();
 
-            DayDetails = new ObservableCollection<Calendar>
-            {
-                new Calendar { Date = dateTimeNow.GetDateTodayString()},
-                new Calendar { Date = dateTimeNow.GetTimeNowString()},
-                new Calendar { Date = "Three"}
-            };
+            dtDateTimeNow = DateTimeNow.RawDateTime;
+
+            Title = DateTimeNow.RawDateTime.ToString("D");
+
+            PopulateDays();
+
         }
 
         private void ListRange()
         {
-            RangePicker = ["Day", "Week", "Month"];
+            RangePicker = new();
+            RangePicker.Add("Day");
+
         }
 
         private async void OnRangePickerChanged()
@@ -68,9 +65,31 @@ namespace Planner.ViewModels
             }
         }  
 
-        private async void PopulateDays()
+        private async void OnDayArrowLeftClicked()
         {
+            dtDateTimeNow = dtDateTimeNow.AddDays(1);
+            Title = dtDateTimeNow.ToString("D");
+        }
 
+
+        private void PopulateDays()
+        {
+            DateTimeNow dateTimeNow = new();
+            DayHours = new ObservableCollection<DayHour>();
+
+            DateTime dateTime = dateTimeNow.RawDateTime;
+            DateTime nextDay = DateTime.Today.AddDays(1);
+
+            while ( DateTime.Compare(dateTime, nextDay) < 1)
+            {
+                DayHours.Add(new DayHour()
+                {
+                    Hour = dateTime,
+                    HourString = dateTime.ToString("HH:00")
+                });
+
+                dateTime = dateTime.AddHours(1);
+            }
         }
     }
 }
