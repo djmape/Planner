@@ -9,13 +9,13 @@ namespace Planner.ViewModels
     {
         public ObservableCollection<DayHour> DayHours { get; private set; }
 
+        public ObservableCollection<Day> WeekDays {  get; private set; } 
+
         public DateTime dtDateTimeNow { get; private set; }
 
         public ICommand OnRangePickerChangedCommand { get; private set; }
 
-        public ICommand OnDayArrowLeftClickedCommand { get; private set; }
-
-        public ICommand OnDayArrowRightClickedCommand {  get; private set; }
+        public ICommand OnDayArrowClickedCommand { get; private set; }
 
         [ObservableProperty]
         private string _title;
@@ -23,14 +23,15 @@ namespace Planner.ViewModels
         [ObservableProperty]
         private int _selectedRange;
 
-        public List<String> RangePicker;
+        [ObservableProperty]
+        public List<String> _rangePicker;
 
         public CalendarViewModel()
         {
             ListRange();
 
             OnRangePickerChangedCommand = new Command(OnRangePickerChanged);
-            OnDayArrowLeftClickedCommand = new Command(OnDayArrowLeftClicked);
+            OnDayArrowClickedCommand = new Command(OnDayArrowClicked);
 
             DateTimeNow DateTimeNow = new DateTimeNow();
 
@@ -38,15 +39,14 @@ namespace Planner.ViewModels
 
             Title = DateTimeNow.RawDateTime.ToString("D");
 
-            PopulateDays();
+            PopulateDay();
+            PopulateWeek();
 
         }
 
         private void ListRange()
         {
-            RangePicker = new();
-            RangePicker.Add("Day");
-
+            RangePicker = ["Day", "Week", "Month"];
         }
 
         private async void OnRangePickerChanged()
@@ -65,14 +65,39 @@ namespace Planner.ViewModels
             }
         }  
 
-        private async void OnDayArrowLeftClicked()
+
+        public void OnDayArrowClicked(object day)
         {
-            dtDateTimeNow = dtDateTimeNow.AddDays(1);
+            dtDateTimeNow = dtDateTimeNow.AddDays(Convert.ToInt32(day));
             Title = dtDateTimeNow.ToString("D");
         }
 
+        // Probably not necessary anymore ?
+        private int DayOfWeekToInt(DateTime dayOfWeekNow)
+        {
+            string strDay = dayOfWeekNow.ToString();
+            int intDay = 0;
+            switch(strDay)
+            {
+                case "Monday":
+                    return intDay + 1;
+                case "Tuesday":
+                    return intDay + 2;
+                case "Wednesday":
+                    return intDay + 3;
+                case "Thursday":
+                    return intDay + 4;
+                case "Friday":
+                    return intDay + 5;
+                case "Saturday":
+                    return intDay + 6;
+                case "Sunday":
+                    return intDay + 7;
+            }
 
-        private void PopulateDays()
+            return 0;
+        }
+        private void PopulateDay()
         {
             DateTimeNow dateTimeNow = new();
             DayHours = new ObservableCollection<DayHour>();
@@ -89,6 +114,35 @@ namespace Planner.ViewModels
                 });
 
                 dateTime = dateTime.AddHours(1);
+            }
+        }
+
+        public void PopulateWeek()
+        {
+            DateTimeNow dtn = new DateTimeNow();
+
+            int daysTillCurrentDate = dtn.RawDateTime.DayOfWeek - DayOfWeek.Monday;
+
+            DateTime weekStartDate = dtn.RawDateTime.AddDays(-daysTillCurrentDate);
+
+            WeekDays =
+            [
+                new Day()
+                {
+                    WeekDay =  weekStartDate.DayOfWeek,
+                    Date = weekStartDate
+                },
+            ];
+
+            for (int i = 1; i < 7; i++)
+            {
+                weekStartDate = weekStartDate.AddDays(1);
+
+                WeekDays.Add(new Day() 
+                {
+                    WeekDay = weekStartDate.DayOfWeek,
+                    Date = weekStartDate
+                });
             }
         }
     }

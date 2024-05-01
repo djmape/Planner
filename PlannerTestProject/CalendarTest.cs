@@ -72,5 +72,34 @@ namespace PlannerTestProject
             Assert.Equal(tempVMHour, tempDayHour);
 
         }
+
+        [Fact]
+        public void IsDateCorrectOnDayArrowClicked()
+        {
+            CalendarViewModel cvm = new CalendarViewModel();
+
+            int[] day = { -1, 1 };
+            Random random = new Random();
+            Object prevOrNext = day[random.Next(day.Length)];
+
+            cvm.OnDayArrowClicked(prevOrNext);
+            Assert.Equal(DateTime.Now.AddDays(Convert.ToDouble(prevOrNext)).ToString("D"), cvm.Title);
+        }
+
+        [Fact]
+        public void AllDaysInWeekCorrect()
+        {
+            CalendarViewModel cvm = new CalendarViewModel();
+
+            cvm.PopulateWeek();
+
+            Assert.Equal(DayOfWeek.Monday, cvm.WeekDays[0].WeekDay);
+            Assert.Equal(DayOfWeek.Tuesday, cvm.WeekDays[1].WeekDay);
+            Assert.Equal(DayOfWeek.Wednesday, cvm.WeekDays[2].WeekDay);
+            Assert.Equal(DayOfWeek.Thursday, cvm.WeekDays[3].WeekDay);
+            Assert.Equal(DayOfWeek.Friday, cvm.WeekDays[4].WeekDay);
+            Assert.Equal(DayOfWeek.Saturday, cvm.WeekDays[5].WeekDay);
+            Assert.Equal(DayOfWeek.Sunday, cvm.WeekDays[6].WeekDay);
+        }
     }
 }

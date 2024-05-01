@@ -31,7 +31,8 @@
             </ImageButton.Source>
             <ImageButton.Behaviors>
                 <toolkit:EventToCommandBehavior EventName="Clicked"
-                                                Command="{Binding OnDayArrowLeftClicked}"/>
+                                                Command="{Binding OnDayArrowClickedCommand}"
+                                                CommandParameter="-1"/>
             </ImageButton.Behaviors>
         </ImageButton>
         <ImageButton Grid.Row="0" Grid.Column="1">
@@ -44,7 +45,8 @@
             </ImageButton.Source>
             <ImageButton.Behaviors>
                 <toolkit:EventToCommandBehavior EventName="Clicked"
-                                                Command="{Binding OnDayArrowRightClicked}"/>
+                                                Command="{Binding OnDayArrowClickedCommand}"
+                                                CommandParameter="1"/>
             </ImageButton.Behaviors>
         </ImageButton>
         <Label Grid.Row="0" Grid.Column="2"

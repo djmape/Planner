@@ -1,11 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-
-namespace Planner.Models
+﻿namespace Planner.Models
 {
-    internal class Day
+    public class Day
     {
-        public string Date { get; set; }
-        public string Title { get; set; }
+        public DayOfWeek WeekDay { get; set; }
+        public DateTime Date { get; set; }
     }
 }

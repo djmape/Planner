@@ -1,7 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.Windows.Input;
-using Planner.Models;
+﻿using Planner.Models;
 using System.Collections.ObjectModel;
 
 namespace Planner.ViewModels
