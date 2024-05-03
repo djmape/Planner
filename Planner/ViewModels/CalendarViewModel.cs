@@ -1,21 +1,52 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Planner.Models;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace Planner.ViewModels
 {
-    public partial class CalendarViewModel : ObservableObject
+    public partial class CalendarViewModel : ObservableObject, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler WeekDaysChanged;
+        public event PropertyChangedEventHandler MonthDaysChanged;
         public ObservableCollection<DayHour> DayHours { get; private set; }
 
-        public ObservableCollection<Day> WeekDays {  get; private set; } 
+        private ObservableCollection<Day> _weekDays;
+        public ObservableCollection<Day> WeekDays 
+        {
+            get
+            {
+                return _weekDays;
+            }
+            set
+            {
+                _weekDays = value;
+                OnWeekDaysChanged();
+            }
+        
+        }
+
+        private ObservableCollection<Day> _monthDays;
+        public ObservableCollection<Day> MonthDays
+        {
+            get
+            {
+                return _monthDays;
+            }
+            set
+            {
+                _monthDays = value;
+                OnMonthDaysChanged();
+            }
+        }
 
         public DateTime dtDateTimeNow { get; private set; }
 
         public ICommand OnRangePickerChangedCommand { get; private set; }
-
         public ICommand OnDayArrowClickedCommand { get; private set; }
+        public ICommand OnWeekArrowClickedCommand { get; private set; }
 
         [ObservableProperty]
         private string _title;
@@ -32,6 +63,7 @@ namespace Planner.ViewModels
 
             OnRangePickerChangedCommand = new Command(OnRangePickerChanged);
             OnDayArrowClickedCommand = new Command(OnDayArrowClicked);
+            OnWeekArrowClickedCommand = new Command(OnWeekArrowClicked);
 
             DateTimeNow DateTimeNow = new DateTimeNow();
 
@@ -41,6 +73,7 @@ namespace Planner.ViewModels
 
             PopulateDay();
             PopulateWeek();
+            PopulateMonth();
 
         }
 
@@ -71,32 +104,6 @@ namespace Planner.ViewModels
             dtDateTimeNow = dtDateTimeNow.AddDays(Convert.ToInt32(day));
             Title = dtDateTimeNow.ToString("D");
         }
-
-        // Probably not necessary anymore ?
-        private int DayOfWeekToInt(DateTime dayOfWeekNow)
-        {
-            string strDay = dayOfWeekNow.ToString();
-            int intDay = 0;
-            switch(strDay)
-            {
-                case "Monday":
-                    return intDay + 1;
-                case "Tuesday":
-                    return intDay + 2;
-                case "Wednesday":
-                    return intDay + 3;
-                case "Thursday":
-                    return intDay + 4;
-                case "Friday":
-                    return intDay + 5;
-                case "Saturday":
-                    return intDay + 6;
-                case "Sunday":
-                    return intDay + 7;
-            }
-
-            return 0;
-        }
         private void PopulateDay()
         {
             DateTimeNow dateTimeNow = new();
@@ -117,6 +124,22 @@ namespace Planner.ViewModels
             }
         }
 
+        public void OnWeekArrowClicked(object week)
+        {
+
+            for (int i = 0; i < 7; i++) 
+            {
+                WeekDays[i].DtDate = WeekDays[i].DtDate.AddDays(Convert.ToInt32(week));
+                WeekDays[i].StrDate = WeekDays[i].DtDate.ToString("MMMM dd");
+            }
+
+
+        }
+
+        protected void OnWeekDaysChanged([CallerMemberName] string _weekDays = null)
+        {
+            WeekDaysChanged?.Invoke(this, new PropertyChangedEventArgs(_weekDays));
+        }
         public void PopulateWeek()
         {
             DateTimeNow dtn = new DateTimeNow();
@@ -130,19 +153,66 @@ namespace Planner.ViewModels
                 new Day()
                 {
                     WeekDay =  weekStartDate.DayOfWeek,
-                    Date = weekStartDate
+                    DtDate = weekStartDate,
+                    StrDate = weekStartDate.ToString("MMMM dd")
                 },
             ];
 
+            DateTime dateQueued = weekStartDate;
+
             for (int i = 1; i < 7; i++)
             {
-                weekStartDate = weekStartDate.AddDays(1);
+                dateQueued = dateQueued.AddDays(1);
 
                 WeekDays.Add(new Day() 
                 {
-                    WeekDay = weekStartDate.DayOfWeek,
-                    Date = weekStartDate
+                    WeekDay = dateQueued.DayOfWeek,
+                    DtDate = dateQueued,
+                    StrDate = dateQueued.ToString("MMMM dd")
                 });
+            }
+        }
+
+        protected void OnMonthDaysChanged([CallerMemberName] string _weekMonths = null)
+        {
+            MonthDaysChanged?.Invoke(this, new PropertyChangedEventArgs(_weekMonths));
+        }
+
+        public void PopulateMonth()
+        {
+            DateTimeNow now = new();
+            DateTime dt = now.RawDateTime;
+            DateTime dateQueued = dt;
+
+            // Get first day on month calendar
+            while(dateQueued.Month >= dt.AddMonths(-1).Month && dateQueued.DayOfWeek != DayOfWeek.Monday)
+            {
+                dateQueued = dateQueued.AddDays(-1);
+            }
+
+            // Get last day on month calendar
+            // Add days to month collection
+
+            MonthDays = new();
+
+            for (int i = 0; i < 7; i++)
+            {
+                MonthDays.Add(new Day()
+                {
+                    StrDate = dateQueued.AddDays(i).DayOfWeek.ToString()
+                });
+            }
+
+            while((dateQueued.Month != dt.AddMonths(1).Month) || (dateQueued.DayOfWeek != DayOfWeek.Monday))
+            {
+                MonthDays.Add(new Day()
+                {
+                    WeekDay = dateQueued.DayOfWeek,
+                    DtDate = dateQueued,
+                    StrDate = dateQueued.ToString("MMMM dd")
+                });
+
+                dateQueued = dateQueued.AddDays(1);
             }
         }
     }
