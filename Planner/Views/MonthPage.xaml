@@ -14,6 +14,11 @@
     <Grid RowDefinitions ="1*, 1*, 2*, 2*, 2*,2*,2*"
               ColumnDefinitions="2*, 2*, 2*, 2*, 2*, 2*, 2*">
         <ImageButton Grid.Row="0" Grid.Column="0">
+            <ImageButton.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="Clicked"
+                                                Command="{Binding OnMonthArrowClickedCommand}"
+                                                CommandParameter="-1" />
+            </ImageButton.Behaviors>
             <ImageButton.Source>
                 <FontImageSource
                     FontFamily="FASolid"
@@ -23,6 +28,11 @@
             </ImageButton.Source>
         </ImageButton>
         <ImageButton Grid.Row="0" Grid.Column="1">
+            <ImageButton.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="Clicked"
+                                                Command="{Binding OnMonthArrowClickedCommand}"
+                                                CommandParameter="1"/>
+            </ImageButton.Behaviors>
             <ImageButton.Source>
                 <FontImageSource
                     FontFamily="FASolid"
@@ -41,7 +51,7 @@
             </Picker.Behaviors>
         </Picker>
         <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4"
-               Text="MONTH"
+               Text="{Binding Title}"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
         <CollectionView ItemsSource="{Binding MonthDays}"

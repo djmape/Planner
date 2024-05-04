@@ -128,5 +128,52 @@ namespace PlannerTestProject
             Assert.Equal(testWeekDays, cvm.WeekDays);
 
         }
+
+        [Fact]
+        public void AllDaysInMonthCorrect()
+        {
+            CalendarViewModel cvm = new();
+
+            DateTimeNow dt = new();
+            DateTime now = dt.RawDateTime;
+            DateTime dateQd = now;
+
+            ObservableCollection<Day> testMonthDays = new();
+
+
+            while(dateQd.Month != now.AddMonths(-1).Month || dateQd.DayOfWeek != DayOfWeek.Monday)
+            {
+                dateQd = dateQd.AddDays(-1);
+            }
+
+            while(dateQd.Month != now.AddMonths(1).Month || dateQd.DayOfWeek != DayOfWeek.Monday)
+            {
+                testMonthDays.Add(new Day()
+                {
+                    WeekDay = dateQd.DayOfWeek,
+                    DtDate = dateQd,
+                    StrDate = dateQd.ToString("MMM dd")
+                });
+
+                dateQd = dateQd.AddDays(1);
+            }
+
+            cvm.PopulateWeek();
+
+            List<string> listTestMonthDays = new();
+            List<string> listMonthDays = new();
+
+            for (int i = 7, count = testMonthDays.Count - 7; i < count; i++)
+            {
+                listTestMonthDays.Add(testMonthDays[i].DtDate.Date.ToString());
+            }
+
+            for (int i = 7, count = cvm.MonthDays.Count - 7; i < count; i++)
+            {
+                listMonthDays.Add(cvm.MonthDays[i].DtDate.Date.ToString());
+            }
+
+            Assert.Equal(listTestMonthDays, listMonthDays);
+        }
     }
 }

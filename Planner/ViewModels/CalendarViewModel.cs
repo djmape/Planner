@@ -44,9 +44,12 @@ namespace Planner.ViewModels
 
         public DateTime dtDateTimeNow { get; private set; }
 
+        public DateTime selectedDateTime { get; private set; }
+
         public ICommand OnRangePickerChangedCommand { get; private set; }
         public ICommand OnDayArrowClickedCommand { get; private set; }
         public ICommand OnWeekArrowClickedCommand { get; private set; }
+        public ICommand OnMonthArrowClickedCommand { get; private set; }
 
         [ObservableProperty]
         private string _title;
@@ -64,12 +67,15 @@ namespace Planner.ViewModels
             OnRangePickerChangedCommand = new Command(OnRangePickerChanged);
             OnDayArrowClickedCommand = new Command(OnDayArrowClicked);
             OnWeekArrowClickedCommand = new Command(OnWeekArrowClicked);
+            OnMonthArrowClickedCommand = new Command(OnMonthArrowClicked);
 
             DateTimeNow DateTimeNow = new DateTimeNow();
 
             dtDateTimeNow = DateTimeNow.RawDateTime;
 
             Title = DateTimeNow.RawDateTime.ToString("D");
+
+            selectedDateTime = DateTimeNow.RawDateTime;
 
             PopulateDay();
             PopulateWeek();
@@ -173,6 +179,19 @@ namespace Planner.ViewModels
             }
         }
 
+        public void OnMonthArrowClicked(object month)
+        {
+            selectedDateTime = selectedDateTime.AddMonths(Convert.ToInt32(month));
+            Title = selectedDateTime.ToString("MMMM");
+
+            for (int i = 7, len = MonthDays.Count; i < len; i++)
+            {
+                MonthDays[i].DtDate = MonthDays[i].DtDate.AddMonths(Convert.ToInt32(month));
+                MonthDays[i].WeekDay = MonthDays[i].DtDate.DayOfWeek;
+                MonthDays[i].StrDate = MonthDays[i].DtDate.ToString("MMMM dd");
+            }
+        }
+
         protected void OnMonthDaysChanged([CallerMemberName] string _weekMonths = null)
         {
             MonthDaysChanged?.Invoke(this, new PropertyChangedEventArgs(_weekMonths));
@@ -180,12 +199,11 @@ namespace Planner.ViewModels
 
         public void PopulateMonth()
         {
-            DateTimeNow now = new();
-            DateTime dt = now.RawDateTime;
+            DateTime dt = selectedDateTime;
             DateTime dateQueued = dt;
 
             // Get first day on month calendar
-            while(dateQueued.Month >= dt.AddMonths(-1).Month && dateQueued.DayOfWeek != DayOfWeek.Monday)
+            while(dateQueued.Month > dt.AddMonths(-1).Month || dateQueued.DayOfWeek != DayOfWeek.Monday)
             {
                 dateQueued = dateQueued.AddDays(-1);
             }
@@ -214,6 +232,8 @@ namespace Planner.ViewModels
 
                 dateQueued = dateQueued.AddDays(1);
             }
+
+            selectedDateTime = dt;
         }
     }
 }
