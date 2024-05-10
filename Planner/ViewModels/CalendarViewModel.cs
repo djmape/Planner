@@ -186,7 +186,7 @@ namespace Planner.ViewModels
 
             for (int i = 7, len = MonthDays.Count; i < len; i++)
             {
-                MonthDays[i].DtDate = MonthDays[i].DtDate.AddMonths(Convert.ToInt32(month));
+                MonthDays[i].DtDate = MonthDays[i].DtDate.AddDays(35 * Convert.ToInt32(month));
                 MonthDays[i].WeekDay = MonthDays[i].DtDate.DayOfWeek;
                 MonthDays[i].StrDate = MonthDays[i].DtDate.ToString("MMMM dd");
             }
