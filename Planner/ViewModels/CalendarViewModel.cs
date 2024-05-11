@@ -184,12 +184,8 @@ namespace Planner.ViewModels
             selectedDateTime = selectedDateTime.AddMonths(Convert.ToInt32(month));
             Title = selectedDateTime.ToString("MMMM");
 
-            for (int i = 7, len = MonthDays.Count; i < len; i++)
-            {
-                MonthDays[i].DtDate = MonthDays[i].DtDate.AddDays(35 * Convert.ToInt32(month));
-                MonthDays[i].WeekDay = MonthDays[i].DtDate.DayOfWeek;
-                MonthDays[i].StrDate = MonthDays[i].DtDate.ToString("MMMM dd");
-            }
+            DateTimeNow dtn = new();
+            PopulateMonth(selectedDateTime);
         }
 
         protected void OnMonthDaysChanged([CallerMemberName] string _weekMonths = null)
@@ -229,6 +225,31 @@ namespace Planner.ViewModels
                     DtDate = dateQueued,
                     StrDate = dateQueued.ToString("MMMM dd")
                 });
+
+                dateQueued = dateQueued.AddDays(1);
+            }
+
+            selectedDateTime = dt;
+        }
+
+        public void PopulateMonth(DateTime dt)
+        {
+            DateTime dateQueued = new DateTime(dt.Year, dt.Month, 1);
+
+            // Get first day on month calendar
+            while (dateQueued.DayOfWeek != DayOfWeek.Monday)
+            {
+                dateQueued = dateQueued.AddDays(-1);
+            }
+
+            // Get last day on month calendar
+            // Add days to month collection
+
+            for (int i = 7, count = MonthDays.Count; i < count; i++) 
+            {
+                MonthDays[i].DtDate = dateQueued;
+                MonthDays[i].WeekDay = dateQueued.DayOfWeek;
+                MonthDays[i].StrDate = dateQueued.ToString("MMMM dd");
 
                 dateQueued = dateQueued.AddDays(1);
             }
