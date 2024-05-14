@@ -4,19 +4,21 @@ using Planner.Views;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Planner.Models.PlannerTables;
+using Planner.Data;
 
 namespace Planner.ViewModels
 {
     internal class EventsViewModel
     {
-        readonly IList<Events> eventsList;
-
         public ICommand OnAddNewEventClickedCommand { get; private set; }
         public ObservableCollection<Events> EventsCollection { get; private set; }
+        public List<Events> GetAllEventsList { get; private set; }
 
+        EventsDatabase database;
         public EventsViewModel()
         {
-            eventsList = new List<Events>();
+            database = new EventsDatabase();
+
             PopulateEventsList();
 
             OnAddNewEventClickedCommand = new Command(AddNewEventClicked);
@@ -26,22 +28,22 @@ namespace Planner.ViewModels
             await Shell.Current.GoToAsync("event_details");
         }
 
+        private async void GetAllEvents()
+        {
+            GetAllEventsList = new();
+            GetAllEventsList = await database.ViewAllEvents();
+        }
+
         private void PopulateEventsList()
         {
-
-            eventsList.Add(new Events
+            GetAllEvents();
+            GetAllEventsList.Add(new Events()
             {
-                EventTitle = "Title 1",
-                EventDescription = "Description 1"
+                EventTitle = GetAllEventsList.Count.ToString(),
+                EventDescription = "appear"
             });
+            EventsCollection = new ObservableCollection<Events>(GetAllEventsList);
 
-            eventsList.Add(new Events
-            {
-                EventTitle = "Title 2",
-                EventDescription = "Description 2"
-            });
-
-            EventsCollection = new ObservableCollection<Events>(eventsList);
         }
     }
 }

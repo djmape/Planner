@@ -8,7 +8,7 @@ namespace Planner.Data
     {
         SQLiteAsyncConnection Database;
 
-        async Task Init()
+        public async Task Init()
         {
             if (Database is not null)
                 return;
@@ -19,10 +19,5 @@ namespace Planner.Data
             var resultEvents = await Database.CreateTableAsync<Events>();
         }
 
-        public async Task<List<Events>> ViewAllEvents()
-        {
-            await Init();
-            return await Database.Table<Events>().ToListAsync();
-        }
     }
 }
