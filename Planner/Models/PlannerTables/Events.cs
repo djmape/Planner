@@ -17,7 +17,7 @@ namespace Planner.Models.PlannerTables
         public DateTime EventEndDate { get; set; }
         public DateTime EventStartTime { get; set; }
 
-        public DateTime eventEndTime { get; set;}
+        public DateTime EventEndTime { get; set;}
 
         [ExtAttributes.ForeignKey(typeof(EventStatus))]
         public int EventStatusID { get; set; }

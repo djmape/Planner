@@ -6,10 +6,15 @@ namespace Planner.Models.PlannerTables
     public class EventStatus
     {
         [PrimaryKey, AutoIncrement]
-        public int eventStatusID { get; set; }
-        public string eventStatus { get; set; }
+        public int EventStatusID { get; set; }
+        public string EventStatusName { get; set; }
 
         [OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Events> events { get; set; }
+
+        public EventStatus()
+        {
+            
+        }
     }
 }

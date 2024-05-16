@@ -11,23 +11,26 @@
         <Label
             Text="Event Title" />
         <Entry
-            Placeholder="Enter event name" />
+            Placeholder="Enter event name"
+            Text="{Binding EventTitle}"/>
         <Label
             Text="Event Description" />
         <Editor
-            Placeholder="Enter description" />
+            Placeholder="Enter description"
+            Text="{Binding EventDescription}"/>
         <Label
             Text="Date" />
         <HorizontalStackLayout>
-            <DatePicker/>
-            <TimePicker/>
+            <DatePicker Date="{Binding EventStartDate}"/>
+            <TimePicker Time="{Binding EventStartTime}"/>
         </HorizontalStackLayout>
         <HorizontalStackLayout>
-            <DatePicker/>
-            <TimePicker/>
+            <DatePicker Date="{Binding EventEndDate}"/>
+            <TimePicker Time="{Binding EventEndTime}"/>
         </HorizontalStackLayout>
         <Button
-            Text="Add Event">
+            Text="Add Event"
+            Command="{Binding OnAddEventClickedCommand}">
         </Button>
     </VerticalStackLayout>
 </ContentPage>

@@ -6,24 +6,19 @@ namespace Planner.Data
 {
     internal class EventsDatabase
     {
-        SQLiteAsyncConnection Database;
+        PlannerSQLiteDatabase MainDB { get; set; } = new();
 
-        async Task Init()
+        public async Task<List<Events>> ViewAllEventsAsync()
         {
-            PlannerSQLiteDatabase mainDB = new();
-            await mainDB.Init();
-            Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
+            await MainDB.Init();
+            return await MainDB.Database.Table<Events>().ToListAsync();
         }
 
-        public async Task<List<Events>> ViewAllEvents()
+        public async Task<int> SaveEventAsync(Events e)
         {
-            await Init();
-            return await Database.Table<Events>().ToListAsync();
-        }
-        public async Task<List<Events>> ViewsAllEvents()
-        {
-            await Init();
-            return await Database.Table<Events>().ToListAsync();
+            await MainDB.Init();
+
+            return await MainDB.Database.InsertAsync(e);
         }
     }
 }
