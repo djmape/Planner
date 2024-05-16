@@ -23,11 +23,24 @@ namespace Planner.ViewModels
         private DateTime _eventStartTime;
         [ObservableProperty]
         private DateTime _eventEndTime;
+        [ObservableProperty]
+        private int _eventStatus;
 
         public EventViewModel() 
         {
             InitializeForm();
             OnAddEventClickedCommand = new Command(OnAddEventClicked);
+        }
+
+        public EventViewModel(Events events)
+        {
+            EventTitle = events.EventTitle;
+            EventDescription = events.EventDescription;
+            EventStartDate = events.EventStartDate;
+            EventEndDate = events.EventEndDate;
+            EventStartDate = events.EventEndDate;
+            EventEndTime = events.EventEndTime;
+            EventStatus = events.EventStatusID;
         }
 
         private void InitializeForm()
@@ -78,5 +91,6 @@ namespace Planner.ViewModels
 
             return 0;
         }
+
     }
 }
