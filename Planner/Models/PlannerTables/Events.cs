@@ -1,6 +1,4 @@
-﻿using Planner.Models;
-using SQLite;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using SQLite;
 using SQLiteNetExtensions.Attributes;
 using ExtAttributes = SQLiteNetExtensions.Attributes;
 

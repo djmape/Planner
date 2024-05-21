@@ -2,12 +2,15 @@
 using Planner.Data;
 using Planner.Models;
 using Planner.Models.PlannerTables;
+using Planner.Models.Repositories;
 using System.Windows.Input;
 
 namespace Planner.ViewModels
 {
     public partial class EventViewModel: ObservableObject
     {
+        private readonly IEventsRepository EventsRepository;
+
         EventsDatabase eventsDatabase = new();
         public ICommand OnAddEventClickedCommand { get; private set; }
 
@@ -26,8 +29,10 @@ namespace Planner.ViewModels
         [ObservableProperty]
         private int _eventStatus;
 
-        public EventViewModel() 
+        public EventViewModel(IEventsRepository eventsRepository) 
         {
+            EventsRepository = eventsRepository;
+
             InitializeForm();
             OnAddEventClickedCommand = new Command(OnAddEventClicked);
         }
@@ -61,7 +66,7 @@ namespace Planner.ViewModels
             e.EventEndTime = EventEndTime;
             e.EventStatusID = CalculateEventStatus();
 
-            await eventsDatabase.SaveEventAsync(e);
+            await EventsRepository.AddEventAsync(e);
         }
 
         private int CalculateEventStatus()

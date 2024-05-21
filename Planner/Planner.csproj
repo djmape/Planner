@@ -97,4 +97,8 @@
 	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="8.0.20" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Models\Services\" />
+	</ItemGroup>
+
 </Project>
