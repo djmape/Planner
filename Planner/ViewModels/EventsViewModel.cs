@@ -2,18 +2,22 @@
 using System.Windows.Input;
 using Planner.Models.PlannerTables;
 using Planner.Data;
+using Planner.Models.Repositories;
 
 namespace Planner.ViewModels
 {
     public class EventsViewModel
     {
+        private readonly IEventsRepository EventsRepository;
         public ICommand OnAddNewEventClickedCommand { get; private set; }
         public ICommand OnEventSelectedCommand { get; private set; }
         public ObservableCollection<Events> EventsCollection { get; private set; } = new();
 
         EventsDatabase database;
-        public EventsViewModel()
+        public EventsViewModel(IEventsRepository eventsRepository)
         {
+
+            EventsRepository = eventsRepository;
             database = new EventsDatabase();
 
             PopulateEventsList();
@@ -28,7 +32,7 @@ namespace Planner.ViewModels
 
         private async void PopulateEventsList()
         {
-            var events = await database.ViewAllEventsAsync();
+            var events = await EventsRepository.ViewAllEventsAsync();
 
             foreach (var ev in events)
             {
@@ -38,8 +42,7 @@ namespace Planner.ViewModels
 
         public async void EventSelected(object eventID)
         {
-            EventViewModel eventVM = new();
-            Events selectedEvent = await database.ViewEventAsync(Convert.ToInt32(eventID));
+            Events selectedEvent = await EventsRepository.ViewEventAsync(Convert.ToInt32(eventID));
 
             await Shell.Current.GoToAsync($"event_details?events={selectedEvent}");
         }

@@ -1,10 +1,11 @@
 ﻿using Planner.Models;
 using Planner.Models.PlannerTables;
+using Planner.Models.Repositories;
 using SQLite;
 
-namespace Planner.Data
+namespace PlannerTestProject.Mocks
 {
-    public class PlannerSQLiteDatabase
+    public class EventsRepositoryMock : IEventsRepository
     {
         public SQLiteAsyncConnection Database { get; set; }
 
@@ -36,5 +37,24 @@ namespace Planner.Data
             return 0;
         }
 
+        public async Task<List<Events>> ViewAllEventsAsync()
+        {
+            await Init();
+            return await Database.Table<Events>().ToListAsync();
+        }
+
+        public async Task<int> AddEventAsync(Events e)
+        {
+            await Init();
+
+            return await Database.InsertAsync(e);
+        }
+
+        public async Task<Events> ViewEventAsync(int eventID)
+        {
+            await Init();
+
+            return await Database.Table<Events>().Where(i => i.EventID == eventID).FirstOrDefaultAsync();
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-namespace Planner.Models
+﻿namespace Planner.Models
 {
     public static class Constants
     {

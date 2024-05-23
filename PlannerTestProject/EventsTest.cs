@@ -1,5 +1,7 @@
 ﻿using Planner.Models.PlannerTables;
+using Planner.Models.Repositories;
 using Planner.ViewModels;
+using PlannerTestProject.Mocks;
 
 namespace PlannerTestProject
 {
@@ -8,10 +10,11 @@ namespace PlannerTestProject
         [Fact]
         private async Task EventIsViewed()
         {
-            var events = new EventsMock();
-            var eventsVM = new EventsViewModel(events);
+            IEventsRepository eventsRepository = new EventsRepositoryMock();
 
-            var selectedEvent = await events.EventSelected
+            var events = new EventsViewModel(eventsRepository);
+
+            var selectedEvent = await events.EventSelected(1);
 
         }
     }

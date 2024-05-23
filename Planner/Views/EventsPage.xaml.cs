@@ -4,10 +4,10 @@ namespace Planner.Views;
 
 public partial class EventsPage : ContentPage
 {
-	public EventsPage()
+	public EventsPage(EventsViewModel eventsViewModel)
 	{
 		InitializeComponent();
 
-		BindingContext = new EventsViewModel();
+		BindingContext = eventsViewModel;
 	}
 }

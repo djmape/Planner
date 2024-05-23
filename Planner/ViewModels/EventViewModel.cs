@@ -10,8 +10,6 @@ namespace Planner.ViewModels
     public partial class EventViewModel: ObservableObject
     {
         private readonly IEventsRepository EventsRepository;
-
-        EventsDatabase eventsDatabase = new();
         public ICommand OnAddEventClickedCommand { get; private set; }
 
         [ObservableProperty]
