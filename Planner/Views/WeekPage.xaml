@@ -11,7 +11,7 @@
     </ContentPage.Resources>
 
     <Grid RowDefinitions ="Auto, Auto, 8*"
-              ColumnDefinitions="1* ,1*, 1*, 1*, 1*, 1*, 1*, 1*">
+              ColumnDefinitions="1*, 1*, 1*, 1*, 1*, 1*, 1*">
         <ImageButton Grid.Row="0" Grid.Column="0">
             <ImageButton.Source>
                 <FontImageSource
@@ -20,6 +20,11 @@
                     Color="DodgerBlue"
                     Size="24"/>
             </ImageButton.Source>
+            <ImageButton.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="Clicked" 
+                                                Command="{Binding OnWeekArrowClickedCommand}"
+                                                CommandParameter="-7"/>
+            </ImageButton.Behaviors>
         </ImageButton>
         <ImageButton Grid.Row="0" Grid.Column="1">
             <ImageButton.Source>
@@ -29,9 +34,14 @@
                     Color="DodgerBlue"
                     Size="24"/>
             </ImageButton.Source>
+            <ImageButton.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="Clicked"
+                                                Command="{Binding OnWeekArrowClickedCommand}"
+                                                CommandParameter="7"/>
+            </ImageButton.Behaviors>
         </ImageButton>
         <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="5"
-               Text="DETAILS"
+               Text="{Binding Title}"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
         <Picker ItemsSource="{Binding RangePicker}"
@@ -43,46 +53,20 @@
                     CommandParameter="{Binding SelectedRange}"/>
             </Picker.Behaviors>
         </Picker>
-        <Label Grid.Row="1" Grid.Column="0"
-               Text="Week"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="1" Grid.Column="1"
-               Text="1st"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="1" Grid.Column="2"
-               Text="2nd"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="1" Grid.Column="3"
-               Text="3rd"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="1" Grid.Column="4"
-               Text="4th"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="1" Grid.Column="5"
-               Text="5th"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="1" Grid.Column="6"
-               Text="6th"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="1" Grid.Column="7"
-               Text="7th"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <ListView ItemsSource="{Binding Week}"
-                  Grid.Row="2">
-            <ListView.ItemTemplate>
+        <CollectionView ItemsSource="{Binding WeekDays}"
+                        ItemsLayout="VerticalGrid, 7"
+                        Grid.Row="2" Grid.ColumnSpan="7">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Date}" Detail="{Binding Date}" />
+                    <Grid RowDefinitions="2*, 2*">
+                        <Label Grid.Row="0"
+                               Text="{Binding WeekDay}" HorizontalOptions="Center"/>
+                        <Label Grid.Row="1"
+                               Text="{Binding StrDate}" HorizontalOptions="Center"/>
+                    </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
     
 </ContentPage>

@@ -11,9 +11,14 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     
-    <Grid RowDefinitions ="Auto, Auto, 1*, 1*, 1*,1*,1*"
-              ColumnDefinitions="1* ,1*, 1*, 1*, 1*, 1*, 1*, 1*">
+    <Grid RowDefinitions ="1*, 1*, 2*, 2*, 2*,2*,2*"
+              ColumnDefinitions="2*, 2*, 2*, 2*, 2*, 2*, 2*">
         <ImageButton Grid.Row="0" Grid.Column="0">
+            <ImageButton.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="Clicked"
+                                                Command="{Binding OnMonthArrowClickedCommand}"
+                                                CommandParameter="-1" />
+            </ImageButton.Behaviors>
             <ImageButton.Source>
                 <FontImageSource
                     FontFamily="FASolid"
@@ -23,6 +28,11 @@
             </ImageButton.Source>
         </ImageButton>
         <ImageButton Grid.Row="0" Grid.Column="1">
+            <ImageButton.Behaviors>
+                <toolkit:EventToCommandBehavior EventName="Clicked"
+                                                Command="{Binding OnMonthArrowClickedCommand}"
+                                                CommandParameter="1"/>
+            </ImageButton.Behaviors>
             <ImageButton.Source>
                 <FontImageSource
                     FontFamily="FASolid"
@@ -41,41 +51,23 @@
             </Picker.Behaviors>
         </Picker>
         <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4"
-               Text="MONTH"
+               Text="{Binding Title}"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
-        <Label Grid.Row="1" Grid.Column="0"
-               Text="Week"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="1" Grid.Column="1"
-               Text="Weekdays"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="2" Grid.Column="0"
-               Text="week1"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="1" Grid.Column="3"
-               Text="week 1"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="2" Grid.Column="4"
-               Text="week 2"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="3" Grid.Column="5"
-               Text="week 3"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="4" Grid.Column="6"
-               Text="week 4"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
-        <Label Grid.Row="5" Grid.Column="7"
-               Text="week 5"
-               VerticalOptions="Center"
-               HorizontalOptions="Center" />
+        <CollectionView ItemsSource="{Binding MonthDays}"
+                        ItemsLayout="VerticalGrid, 7"
+                        Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="1" Grid.RowSpan="6"
+                        HorizontalOptions="Center">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Label Text="{Binding StrDate}" Grid.RowSpan="7" 
+                               HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            
+        </CollectionView>
     </Grid>
     
 </ContentPage>

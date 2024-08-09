@@ -1,47 +1,50 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Planner.Views;
-using Planner.Models;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Planner.Models.PlannerTables;
+using Planner.Data;
+using Planner.Models.Repositories;
 
 namespace Planner.ViewModels
 {
-    internal class EventsViewModel
+    public class EventsViewModel
     {
-        readonly IList<Events> eventsList;
-
+        private readonly IEventsRepository EventsRepository;
         public ICommand OnAddNewEventClickedCommand { get; private set; }
-        public ObservableCollection<Events> EventsCollection { get; private set; }
+        public ICommand OnEventSelectedCommand { get; private set; }
+        public ObservableCollection<Events> EventsCollection { get; private set; } = new();
 
-        public EventsViewModel()
+        EventsDatabase database;
+        public EventsViewModel(IEventsRepository eventsRepository)
         {
-            eventsList = new List<Events>();
+
+            EventsRepository = eventsRepository;
+            database = new EventsDatabase();
+
             PopulateEventsList();
 
             OnAddNewEventClickedCommand = new Command(AddNewEventClicked);
+            OnEventSelectedCommand = new Command(EventSelected);
         }
         private async void AddNewEventClicked()
         {
             await Shell.Current.GoToAsync("event_details");
         }
 
-        private void PopulateEventsList()
+        private async void PopulateEventsList()
         {
+            var events = await EventsRepository.ViewAllEventsAsync();
 
-            eventsList.Add(new Events
+            foreach (var ev in events)
             {
-                EventTitle = "Title 1",
-                EventDescription = "Description 1"
-            });
+                EventsCollection.Add(ev);
+            }    
+        }
 
-            eventsList.Add(new Events
-            {
-                EventTitle = "Title 2",
-                EventDescription = "Description 2"
-            });
+        public async void EventSelected(object eventID)
+        {
+            Events selectedEvent = await EventsRepository.ViewEventAsync(Convert.ToInt32(eventID));
 
-            EventsCollection = new ObservableCollection<Events>(eventsList);
+            await Shell.Current.GoToAsync($"event_details?events={selectedEvent}");
         }
     }
 }

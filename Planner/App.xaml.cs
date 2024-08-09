@@ -11,5 +11,6 @@ namespace Planner
 
             MainPage = new AppShell();
         }
+
     }
 }

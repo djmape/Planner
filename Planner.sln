@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Planner", "Planner\Planner.csproj", "{AA4CBC68-1704-455F-AC71-5F3E18107C06}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlannerTestProject", "PlannerTestProject\PlannerTestProject.csproj", "{B6C55506-D3EF-4D31-91C1-FE9D99D25BA8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlannerTestProject", "PlannerTestProject\PlannerTestProject.csproj", "{D06DD054-44BB-4430-847F-5F4888FA0FC0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AA4CBC68-1704-455F-AC71-5F3E18107C06} = {AA4CBC68-1704-455F-AC71-5F3E18107C06}
 	EndProjectSection
@@ -22,10 +22,10 @@ Global
 		{AA4CBC68-1704-455F-AC71-5F3E18107C06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA4CBC68-1704-455F-AC71-5F3E18107C06}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA4CBC68-1704-455F-AC71-5F3E18107C06}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{B6C55506-D3EF-4D31-91C1-FE9D99D25BA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6C55506-D3EF-4D31-91C1-FE9D99D25BA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6C55506-D3EF-4D31-91C1-FE9D99D25BA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6C55506-D3EF-4D31-91C1-FE9D99D25BA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D06DD054-44BB-4430-847F-5F4888FA0FC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D06DD054-44BB-4430-847F-5F4888FA0FC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D06DD054-44BB-4430-847F-5F4888FA0FC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D06DD054-44BB-4430-847F-5F4888FA0FC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

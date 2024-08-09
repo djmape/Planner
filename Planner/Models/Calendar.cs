@@ -1,9 +1,7 @@
-﻿
-
-namespace Planner.Models
+﻿namespace Planner.Models
 {
     public class Calendar
     {
-        public string Date { get; set; }
+        public string DayHours { get; private set; }
     }
 }
